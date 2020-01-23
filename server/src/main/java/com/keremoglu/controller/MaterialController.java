@@ -28,7 +28,6 @@ public class MaterialController {
     MaterialRepository materialRepository;
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> queryAll() {
         List lst = new ArrayList<>();
         List<Material> ret = materialRepository.findAll();
@@ -39,7 +38,6 @@ public class MaterialController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> save(@RequestBody Map map) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String userName = ((UserDetailsImpl) token.getPrincipal()).getUsername();
@@ -62,7 +60,6 @@ public class MaterialController {
     }
 
     @GetMapping("/material/{materialId}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> query(@PathVariable("materialId") Long id) {
         Material u = materialRepository.findById(id).get();
         return new ResponseEntity(u.toMap(), HttpStatus.OK);

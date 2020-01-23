@@ -31,7 +31,6 @@ public class WareHouseController {
     WarehouseUserRepository warehouseUserRepository;
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> queryAll() {
         List lst = new ArrayList<>();
         List<Warehouse> ret = warehouseRepository.findAll();
@@ -42,7 +41,6 @@ public class WareHouseController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> save(@RequestBody Map map) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String userName = ((UserDetailsImpl) token.getPrincipal()).getUsername();
@@ -65,7 +63,6 @@ public class WareHouseController {
     }
 
     @RequestMapping(value = "/saveUsers", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveUsers(@RequestBody Map map) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String userName = ((UserDetailsImpl) token.getPrincipal()).getUsername();
@@ -121,7 +118,6 @@ public class WareHouseController {
     }
 
     @GetMapping("/warehouse/{warehouseId}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> query(@PathVariable("warehouseId") Long id) {
         Warehouse u = warehouseRepository.findById(id).get();
         Map map = u.toMap();
@@ -133,7 +129,6 @@ public class WareHouseController {
     }
 
     @GetMapping("/fetchWarehousesByUser")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> query() {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String userName = ((UserDetailsImpl) token.getPrincipal()).getUsername();

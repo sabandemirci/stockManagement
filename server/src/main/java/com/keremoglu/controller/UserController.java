@@ -27,13 +27,11 @@ public class UserController {
     RoleRepository roleRepository;
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public String userAccess() {
         return "User Content.";
     }
 
     @RequestMapping(value = "/queryAll", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> queryAllUsers() {
         List lst = new ArrayList<>();
         List<User> userList = userRepository.findAll();
@@ -44,7 +42,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody Map map) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String userName = ((UserDetailsImpl) token.getPrincipal()).getUsername();
@@ -84,7 +81,6 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> queryUser(@PathVariable("userId") Long userId) {
         User u = userRepository.findById(userId).get();
         return new ResponseEntity(u.toMap(), HttpStatus.OK);
